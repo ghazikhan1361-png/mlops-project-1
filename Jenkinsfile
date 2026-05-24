@@ -17,5 +17,12 @@ pipeline {
                 sh 'docker push $IMAGE_NAME:$IMAGE_TAG'
             }
         }
+        stage('Deploy Locally') {
+            steps {
+                sh 'docker stop myapp || true'
+                sh 'docker rm myapp || true'
+                sh 'docker run -d --name myapp -p 80:80 $IMAGE_NAME:$IMAGE_TAG'
+            }
+        }
     }
-}This phase is where the "automation" in MLOps actually happens. You are going to link your GitHub repository to Jenkins, and write a script that tells Jenkins to automatically build and push your Docker image every time you update your code.
+}
